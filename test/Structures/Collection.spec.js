@@ -2467,8 +2467,8 @@ describe('Collection', () => {
                     moxios.requests.mostRecent().respondWith({
                         status: 422,
                         response: {
-                            [m1.identifier()]: {a: ['Error!']},
-                            [m3.identifier()]: {a: ['Bad!']},
+                            [m1._identifier()]: {a: ['Error!']},
+                            [m3._identifier()]: {a: ['Bad!']},
                         }
                     });
                 })
