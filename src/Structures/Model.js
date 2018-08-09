@@ -5,6 +5,14 @@ import ValidationError from "../Errors/ValidationError.js";
 import Vue from "vue";
 import * as _ from "lodash";
 
+const isEmptyObject = _.overEvery(_.isObject, _.isEmpty);
+const removeEmptyObj = obj =>
+    _.isArray(obj)
+        ? _.reject(_.map(obj, removeEmptyObj), isEmptyObject)
+        : _.isObject(obj)
+        ? _.omitBy(_.mapValues(obj, removeEmptyObj), isEmptyObject)
+        : obj;
+
 /**
  * Reserved keywords that can't be used for attribute or option names.
  */
@@ -609,7 +617,7 @@ class Model extends Base {
         if (!this.has(attribute)) {
             return Promise.reject(new Error(`'${attribute}' is not defined`));
         }
-        
+
         let errors  = [];
         let value   = this.get(attribute);
         let rules   = this.getValidateRules(attribute);
@@ -629,7 +637,7 @@ class Model extends Base {
 
             // Set errors for the model being validated.
             this.setAttributeErrors(attribute, errors);
-            
+
             // Check to see if we should yield only the first error.
             if (this.getOption('useFirstErrorOnly') && !_.isEmpty(errors)) {
                 return _.first(errors);
@@ -644,7 +652,7 @@ class Model extends Base {
      *
      * @param {Object} [attributes] One or more attributes to validate.
      *
-     * @returns {Promise} 
+     * @returns {Promise}
      */
     validate(attributes) {
         if (_.isUndefined(attributes)) {
@@ -910,10 +918,12 @@ class Model extends Base {
      * @param {string|array} errors
      */
     setAttributeErrors(attribute, errors) {
-        if (_.isEmpty(errors)) {
+        const filteredErrors = removeEmptyObj(_.castArray(errors));
+
+        if (_.isEmpty(filteredErrors)) {
             Vue.delete(this._errors, attribute);
         } else {
-            Vue.set(this._errors, attribute, _.castArray(errors));
+            Vue.set(this._errors, attribute, filteredErrors);
         }
     }
 
@@ -1104,7 +1114,7 @@ class Model extends Base {
                 return resolve(Base.REQUEST_REDUNDANT);
             }
 
-            // 
+            //
             Vue.set(this, 'saving', true);
 
             // Mutate attribute before we save if required to do so.
@@ -1113,7 +1123,9 @@ class Model extends Base {
             }
 
             return this.validate().then((errors) => {
-                if (_.isEmpty(errors)) {
+                const filteredErrors = removeEmptyObj(_.castArray(errors));
+
+                if (_.isEmpty(filteredErrors)) {
                     return resolve(Base.REQUEST_CONTINUE);
                 }
 
