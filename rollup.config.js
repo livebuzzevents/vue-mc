@@ -12,8 +12,8 @@ const BASE = {
         babel({
             babelrc: false,
             plugins: ["external-helpers"],
-            presets: [["env", { modules: false }], "stage-0"],
-            exclude: ["node_modules/**"],
+            presets: [["env", { modules: false }], "stage-0", "react"],
+            exclude: ["node_modules/(?!(validator)/).*/**"],
         }),
     ],
 };
