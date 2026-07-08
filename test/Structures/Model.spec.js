@@ -2609,12 +2609,23 @@ describe('Model', () => {
 
         it('should mutate on save if option is enabled', (done) => {
             let M = class extends Model {
-                onSave() {
-                    super.onSave();
+                routes() {
+                    return {
+                        save: '/models'
+                    }
+                }
+
+                getRequest() {
+                    return {
+                        send() {
+                            return Promise.resolve(null);
+                        }
+                    }
+                }
+
+                onSaveSuccess() {
                     expect(m.a).to.equal('5');
                     done();
-
-                    return false;
                 }
 
                 options() {

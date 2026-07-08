@@ -894,7 +894,7 @@ class Collection extends Base {
             // Page was provided, so we should either set the page or disable
             // pagination entirely if the page is `false`.
         } else {
-            this['_page'] = max([1, _.toSafeInteger(page)]);
+            this['_page'] = _.max([1, _.toSafeInteger(page)]);
         }
 
         return this;

@@ -453,7 +453,7 @@ class Model extends Base {
 
         } else {
             _.each(_.castArray(attribute), (attribute) => {
-                this._reference[attribute] = get(active, attribute);
+                this._reference[attribute] = _.get(active, attribute);
             });
         }
 

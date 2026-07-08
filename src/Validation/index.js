@@ -12,13 +12,18 @@ import isURL            from 'validator/lib/isURL'
 import isUUID           from 'validator/lib/isUUID'
 
 import {
-    format      as formatDate, 
-    isAfter     as isAfterDate, 
-    isBefore    as isBeforeDate, 
-    isValid     as isValidDate, 
-    parse       as parseDate, 
+    format      as formatDate,
+    isAfter     as isAfterDate,
+    isBefore    as isBeforeDate,
+    isValid     as isValidDate,
+    parse       as parseDate,
+    parseISO,
     toDate
 } from "date-fns";
+
+const normalizeDate = (value) => {
+    return _.isString(value) ? parseISO(value) : value;
+};
 
 // We want to set the messages as a superglobal so that imports across files
 // reference the same messages object.
@@ -309,7 +314,7 @@ export const after = function(date) {
     return rule({
         name: 'after',
         data: {date},
-        test: (value) => isAfterDate(value, date),
+        test: (value) => isAfterDate(normalizeDate(value), normalizeDate(date)),
     })
 }
 
@@ -365,7 +370,7 @@ export const before = function(date) {
     return rule({
         name: 'before',
         data: {date},
-        test: (value) => isBeforeDate(value, date),
+        test: (value) => isBeforeDate(normalizeDate(value), normalizeDate(date)),
     })
 }
 
@@ -373,18 +378,18 @@ export const before = function(date) {
  * Checks if a value is between a given minimum or maximum, inclusive by default.
  */
 export const between = function(min, max, inclusive = true) {
-    let _min = +(_.isString(min) ? toDate(min) : min);
-    let _max = +(_.isString(max) ? toDate(max) : max);
+    let _min = +normalizeDate(min);
+    let _max = +normalizeDate(max);
 
     return rule({
         data: {min, max},
         name: inclusive ? 'between_inclusive' : 'between',
         test: (value) => {
-            let _value = +(_.isString(value) ? toDate(value) : value);
+            let _value = +normalizeDate(value);
 
             return inclusive
                 ? _.gte(_value, _min) && _.lte(_value, _max)
-                : _.gt (_value, _min) && _.lt (_value, _max);
+                : _.gt(_value, _min) && _.lt(_value, _max);
         },
     })
 }
@@ -411,7 +416,7 @@ export const creditcard = rule({
  */
 export const date = rule({
     name: 'date',
-    test: (value) => isValidDate(toDate(value)),
+    test: (value) => isValidDate(normalizeDate(value)),
 })
 
 

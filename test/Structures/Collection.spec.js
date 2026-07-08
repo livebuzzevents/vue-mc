@@ -2892,12 +2892,10 @@ describe('Collection', () => {
             })
         })
 
-        it('should not skip if already fetching', () => {
+        it('should not skip if already fetching', (done) => {
             let c = new class extends Collection {
-                routes() { return {fetch: '/fetch'}}
+                routes() { return {fetch: '/fetch'} }
             }
-
-            c.loading = true;
 
             moxios.withMock(() => {
                 c.fetch().then((response) => {
@@ -2906,13 +2904,15 @@ describe('Collection', () => {
                 });
 
                 moxios.wait(() => {
-                    moxios.requests.mostRecent().respondWith({
+                    let request = moxios.requests.mostRecent();
+
+                    request.respondWith({
                         status: 200,
                         response: [],
                     });
-                })
-            })
-        })
+                });
+            });
+        });
 
         it('should skip if paginated and on last page', (done) => {
             let c = new class extends Collection {
