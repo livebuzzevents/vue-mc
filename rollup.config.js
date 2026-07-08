@@ -10,10 +10,10 @@ const BASE = {
         resolve(),
         commonjs(),
         babel({
+            exclude: ['node_modules/**/*'],
             babelrc: false,
-            plugins: ["external-helpers"],
-            presets: [["env", { modules: false }], "stage-0", "react"],
-            exclude: ["node_modules/(?!(validator)/).*/**"],
+            plugins: [],
+            presets: [["@babel/preset-env", {modules: false}]],
         }),
     ],
 };
