@@ -1,6 +1,6 @@
 {
   "name": "@livebuzzevents/vue-mc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "license": "MIT",
   "main": "vue-mc.js",
@@ -62,7 +62,7 @@
     "lint": "eslint ./src/",
     "test": "nyc mocha ./test",
     "docs": "cd docs && jekyll serve",
-    "prepublishOnly": "yarn test && yarn build"
+    "prepublishOnly": "npm run test && npm run build"
   },
   "nyc": {
     "require": [
