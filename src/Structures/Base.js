@@ -1,3 +1,4 @@
+import { reactive } from 'vue'
 import Request      from '../HTTP/Request.js'
 import * as _       from 'lodash'
 import { autobind } from '../utils.js'
@@ -12,10 +13,6 @@ const REQUEST_SKIP      = 2;
 class Base {
 
     constructor(options) {
-        autobind(this);
-
-        // Define an automatic unique ID. This is primarily to distinguish
-        // between multiple instances of the same name and data.
         Object.defineProperty(this, '_uid', {
             value:        _.uniqueId(),
             enumerable:   false,
@@ -23,11 +20,17 @@ class Base {
             writable:     false,
         });
 
-        this['_listeners'] = {};  // Event listeners
-        this['_options'] =   {};  // Internal option store
+        this['_listeners'] = {}; // Event listeners
+        this['_options'] = {};   // Internal option store
 
-        this.setOptions(options);
-        this.boot();
+        const instance = reactive(this);
+
+        autobind(instance);
+
+        instance.setOptions(options);
+        instance.boot();
+
+        return instance;
     }
 
     /**
