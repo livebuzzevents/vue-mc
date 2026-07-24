@@ -361,8 +361,29 @@ class Model extends Base {
      *
      * @returns {Object} The attributes that were assigned to the model.
      */
-    assign(attributes) {
-        this.set(_.defaultsDeep({}, attributes, _.cloneDeep(this.defaults())));
+    assign(attributes = {}) {
+        const merged = _.mergeWith(
+            {},
+            _.cloneDeep(this.defaults()),
+            attributes || {},
+            (currentValue, incomingValue) => {
+                if (_.isArray(incomingValue)) {
+                    return incomingValue.slice();
+                }
+
+                if (
+                    _.isObject(incomingValue) &&
+                    !_.isPlainObject(incomingValue) &&
+                    _.isFunction(incomingValue.clone)
+                ) {
+                    return incomingValue;
+                }
+
+                return undefined;
+            },
+        );
+
+        this.set(merged);
         this.sync();
     }
 
