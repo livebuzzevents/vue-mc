@@ -2,7 +2,7 @@ import Base from "./Base.js";
 import Collection from "./Collection.js";
 import ResponseError from "../Errors/ResponseError.js";
 import ValidationError from "../Errors/ValidationError.js";
-import * as _ from "lodash";
+import _ from 'lodash';
 
 const isEmptyObject = _.overEvery(_.isObject, _.isEmpty);
 const removeEmptyObj = obj =>

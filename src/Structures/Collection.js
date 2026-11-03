@@ -3,7 +3,7 @@ import Model from "./Model.js";
 import ResponseError from "../Errors/ResponseError.js";
 import ValidationError from "../Errors/ValidationError.js";
 import ProxyResponse from "../HTTP/ProxyResponse.js";
-import * as _ from "lodash";
+import _ from 'lodash';
 
 /**
  * Used as a marker to indicate that pagination is not enabled.

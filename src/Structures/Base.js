@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import Request      from '../HTTP/Request.js'
-import * as _       from 'lodash'
+import _ from 'lodash'
 import { autobind } from '../utils.js'
 
 const REQUEST_CONTINUE  = 0;

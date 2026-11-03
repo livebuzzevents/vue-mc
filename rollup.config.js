@@ -1,8 +1,10 @@
-import * as _ from "lodash";
-import babel from "rollup-plugin-babel";
-import resolve from "rollup-plugin-node-resolve";
-import commonjs from "rollup-plugin-commonjs";
-import pkg from "./package.json";
+import { createRequire } from 'module';
+import babel from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+
+const require = createRequire(import.meta.url);
+const pkg = require('./package.json');
 
 const BASE = {
     external: ["lodash", "vue", "axios"],
@@ -11,29 +13,32 @@ const BASE = {
         commonjs(),
         babel({
             exclude: ['node_modules/**/*'],
+            babelHelpers: 'bundled',
             babelrc: false,
-            plugins: [],
             presets: [["@babel/preset-env", {modules: false}]],
         }),
     ],
 };
 
-const MAIN = _.assign({}, BASE, {
+const MAIN = {
+    ...BASE,
     input: "src/index.js",
     output: [
         { file: pkg.main, format: "cjs" },
         { file: pkg.module, format: "es" },
     ],
-});
+};
 
-const VALIDATION = _.assign({}, BASE, {
+const VALIDATION = {
+    ...BASE,
     input: "src/Validation/index.js",
     output: [{ file: "validation/index.js", format: "cjs" }],
-});
+};
 
-const LOCALES = _.assign({}, BASE, {
+const LOCALES = {
+    ...BASE,
     input: "./src/Validation/locale.js",
     output: [{ file: "validation/locale.js", format: "cjs" }],
-});
+};
 
 export default [MAIN, VALIDATION, LOCALES];

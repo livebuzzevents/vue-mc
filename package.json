@@ -1,6 +1,7 @@
 {
   "name": "@livebuzzevents/vue-mc",
   "version": "1.0.2",
+  "type": "module",
   "description": "",
   "license": "MIT",
   "main": "vue-mc.js",
@@ -34,46 +35,45 @@
     "url": "https://github.com/rtheunissen"
   },
   "dependencies": {
-    "axios": "^1.18.1",
-    "date-fns": "^2.30.0",
-    "lodash": "4.18.1",
-    "validator": "13.15.35",
-    "vue": "^3.2.47"
+    "date-fns": "^4.4.0",
+    "validator": "13.15.35"
+  },
+  "peerDependencies": {
+    "axios": "^1.0.0",
+    "lodash": "^4.17.0",
+    "vue": "^3.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.6",
-    "@babel/register": "^7.0.0",
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@rollup/plugin-babel": "^7.1.0",
+    "@rollup/plugin-commonjs": "^29.0.3",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
     "array-permutation": "^0.2.0",
-    "babel-plugin-istanbul": "^5.1.0",
-    "babel-preset-env": "^1.7.0",
-    "chai": "^4.2.0",
-    "eslint": "^6.1.0",
-    "mocha": "^6.2.0",
+    "c8": "^12.0.0",
+    "chai": "^6.3.0",
+    "eslint": "^10.14.0",
+    "mocha": "^12.0.3",
     "moxios": "^0.4.0",
-    "nyc": "^14.1.1",
-    "rollup": "^2.80.0",
-    "rollup-plugin-babel": "^4.0.3",
-    "rollup-plugin-commonjs": "^10.0.2",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup": "^4.67.4"
   },
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint ./src/",
-    "test": "nyc mocha ./test",
+    "test": "c8 mocha",
     "docs": "cd docs && jekyll serve",
     "prepublishOnly": "npm run test && npm run build"
   },
-  "nyc": {
-    "require": [
-      "@babel/register"
-    ],
+  "overrides": {
+    "minimatch": ">=11.0.1",
+    "glob": ">=14.0.2"
+  },
+  "c8": {
     "reporter": [
       "lcov",
       "text",
       "html"
-    ],
-    "sourceMap": false,
-    "instrument": false
+    ]
   }
 }

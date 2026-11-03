@@ -1,8 +1,9 @@
 import moxios from 'moxios'
+import axios from 'axios'
 import {assert, expect} from 'chai'
 import {Model, Collection} from '../../src/index.js'
 import ValidationError  from '../../src/Errors/ValidationError.js'
-import * as _ from 'lodash';
+import _ from 'lodash';
 import * as util from 'util';
 import {
     boolean,
@@ -37,11 +38,11 @@ function expectRequestToBeSkipped(request, done) {
 describe('Model', () => {
 
     beforeEach(function () {
-      moxios.install()
+      moxios.install(axios)
     })
 
     afterEach(function () {
-      moxios.uninstall()
+      moxios.uninstall(axios)
     })
 
     describe('autobind', () => {
@@ -1580,7 +1581,7 @@ describe('Model', () => {
                         response: {id: 1, name: 'Fred'}
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should fail when receiving no data on success', (done) => {
@@ -1602,7 +1603,7 @@ describe('Model', () => {
                         status: 200
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should skip if already fetching', (done) => {
@@ -1638,7 +1639,7 @@ describe('Model', () => {
                         }
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should emit event on failure', (done) => {
@@ -1664,7 +1665,7 @@ describe('Model', () => {
                         status: 500
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should use fetch route override', (done) => {
@@ -1683,7 +1684,7 @@ describe('Model', () => {
                     expect(request.url).to.equal('/test/fetch/route/5');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use fetch headers override', (done) => {
@@ -1700,7 +1701,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('yes');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use default headers override', (done) => {
@@ -1717,7 +1718,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('yes');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use default headers with fetch headers override', (done) => {
@@ -1735,7 +1736,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('no');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use fetch method override', (done) => {
@@ -1755,7 +1756,7 @@ describe('Model', () => {
                     expect(request.config.method).to.equal('patch');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use fetch query parameters override', (done) => {
@@ -1775,7 +1776,7 @@ describe('Model', () => {
                     expect(request.url).to.equal('/collection/fetch/5?a=1');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should be fatal on error', (done) => {
@@ -1794,7 +1795,7 @@ describe('Model', () => {
                         status: 500
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should be non-fatal on success', (done) => {
@@ -1816,7 +1817,7 @@ describe('Model', () => {
                         }
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should set loading to true on fetch success', (done) => {
@@ -1837,7 +1838,7 @@ describe('Model', () => {
                         response: {a: 1},
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should set loading to false on fetch failure', (done) => {
@@ -1856,7 +1857,7 @@ describe('Model', () => {
                         status: 500
                     })
                 })
-            })
+            }, axios)
         })
     })
 
@@ -1889,7 +1890,7 @@ describe('Model', () => {
                         }
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should handle successful save with identifier return', (done) => {
@@ -1922,7 +1923,7 @@ describe('Model', () => {
                         response: "5"
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should handle successful save with custom identifier return', (done) => {
@@ -1948,7 +1949,7 @@ describe('Model', () => {
                         response: 'Test'
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should handle successful save with attributes return', (done) => {
@@ -1972,7 +1973,7 @@ describe('Model', () => {
                         }
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should handle successful save with attributes return overriding defaults', (done) => {
@@ -1996,7 +1997,7 @@ describe('Model', () => {
                         }
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should fail if unexpected data is returned in a response', (done) => {
@@ -2020,7 +2021,7 @@ describe('Model', () => {
                         response: "5"
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should skip if already saving', (done) => {
@@ -2057,7 +2058,7 @@ describe('Model', () => {
                         status: 500,
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should use save route override', (done) => {
@@ -2074,7 +2075,7 @@ describe('Model', () => {
                     expect(request.url).to.equal('/test/save/route/5');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use save headers override', (done) => {
@@ -2093,7 +2094,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('yes');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use default headers override', (done) => {
@@ -2110,7 +2111,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('yes');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use default headers with save headers override', (done) => {
@@ -2128,7 +2129,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('no');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use save method override', (done) => {
@@ -2145,7 +2146,7 @@ describe('Model', () => {
                     expect(request.config.method).to.equal('options');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use save query parameters override', (done) => {
@@ -2162,7 +2163,7 @@ describe('Model', () => {
                     expect(request.url).to.equal('/collection/save?a=1');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use model save data override', (done) => {
@@ -2179,7 +2180,7 @@ describe('Model', () => {
                     expect(request.config.data).to.deep.equal('{"a":1}');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should be fatal on fatal error', (done) => {
@@ -2200,7 +2201,7 @@ describe('Model', () => {
                         status: 500
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should be non-fatal on success', (done) => {
@@ -2221,7 +2222,7 @@ describe('Model', () => {
                         status: 200
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should be non-fatal on non-fatal failure', (done) => {
@@ -2245,7 +2246,7 @@ describe('Model', () => {
                         }
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should clear errors on success', (done) => {
@@ -2266,7 +2267,7 @@ describe('Model', () => {
                         status: 200
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should clear errors on fatal failure', (done) => {
@@ -2290,7 +2291,7 @@ describe('Model', () => {
                         status: 500
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should set saving to true on save', (done) => {
@@ -2311,7 +2312,7 @@ describe('Model', () => {
                         status: 200
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should set saving to false on save success', (done) => {
@@ -2330,7 +2331,7 @@ describe('Model', () => {
                         status: 200
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should set saving to false on save failure', (done) => {
@@ -2353,7 +2354,7 @@ describe('Model', () => {
                         status: 500
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should add to all collections on create', (done) => {
@@ -2382,7 +2383,7 @@ describe('Model', () => {
                         }
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should use patch method if patching', (done) => {
@@ -2403,7 +2404,7 @@ describe('Model', () => {
                     expect(request.config.method).to.equal('options');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use create method if creating', (done) => {
@@ -2420,7 +2421,7 @@ describe('Model', () => {
                     expect(request.config.method).to.equal('options');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use changed attributes only when patching', (done) => {
@@ -2440,7 +2441,7 @@ describe('Model', () => {
                     expect(request.config.data).to.equal('{"name":"John"}');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should be successful if no attributes have changed when option is enabled', (done) => {
@@ -2537,7 +2538,7 @@ describe('Model', () => {
                         status: 200
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should fail if an attribute does not pass a validation rule', (done) => {
@@ -2580,7 +2581,7 @@ describe('Model', () => {
                         }
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should throw if server-side validation response is bad', (done) => {
@@ -2604,7 +2605,7 @@ describe('Model', () => {
                         response: 5
                     });
                 })
-            })
+            }, axios)
         })
 
         it('should mutate on save if option is enabled', (done) => {
@@ -2703,7 +2704,7 @@ describe('Model', () => {
                         status: 200
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should skip if already deleting', (done) => {
@@ -2738,7 +2739,7 @@ describe('Model', () => {
                         status: 200
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should emit event on failure', (done) => {
@@ -2762,7 +2763,7 @@ describe('Model', () => {
                         status: 500
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should use delete route override', (done) => {
@@ -2779,7 +2780,7 @@ describe('Model', () => {
                     expect(request.url).to.equal('/test/delete/route/1');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use delete headers override', (done) => {
@@ -2796,7 +2797,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('yes');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use default headers override', (done) => {
@@ -2813,7 +2814,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('yes');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use default headers with delete headers override', (done) => {
@@ -2831,7 +2832,7 @@ describe('Model', () => {
                     expect(request.headers.test).to.equal('no');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use delete method override', (done) => {
@@ -2849,7 +2850,7 @@ describe('Model', () => {
                     expect(request.config.method).to.equal('patch');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should use delete query parameters override', (done) => {
@@ -2867,7 +2868,7 @@ describe('Model', () => {
                     expect(request.url).to.equal('/delete/1?a=1');
                     done();
                 })
-            })
+            }, axios)
         })
 
         it('should be fatal on fatal error', (done) => {
@@ -2887,7 +2888,7 @@ describe('Model', () => {
                         status: 500
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should be non-fatal on success', (done) => {
@@ -2907,7 +2908,7 @@ describe('Model', () => {
                         status: 200
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should set deleting to true on delete', (done) => {
@@ -2929,7 +2930,7 @@ describe('Model', () => {
                         status: 200
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should set deleting to false on delete success', (done) => {
@@ -2951,7 +2952,7 @@ describe('Model', () => {
                         status: 200
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should set deleting to false on delete failure', (done) => {
@@ -2973,7 +2974,7 @@ describe('Model', () => {
                         status: 500
                     })
                 })
-            })
+            }, axios)
         })
 
         it('should remove from all collections on delete', (done) => {
@@ -3002,7 +3003,7 @@ describe('Model', () => {
                         status: 200
                     });
                 })
-            })
+            }, axios)
         })
     })
 

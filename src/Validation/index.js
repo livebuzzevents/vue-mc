@@ -1,15 +1,28 @@
 import { en_us }        from './locale.js'
-import * as _           from 'lodash';
-import isAlpha          from 'validator/lib/isAlpha'
-import isAlphanumeric   from 'validator/lib/isAlphanumeric'
-import isBase64         from 'validator/lib/isBase64'
-import isCreditCard     from 'validator/lib/isCreditCard'
-import isEmail          from 'validator/lib/isEmail'
-import isIP             from 'validator/lib/isIP'
-import isISO8601        from 'validator/lib/isISO8601'
-import isJSON           from 'validator/lib/isJSON'
-import isURL            from 'validator/lib/isURL'
-import isUUID           from 'validator/lib/isUUID'
+import _ from 'lodash';
+import _isAlpha         from 'validator/lib/isAlpha.js'
+import _isAlphanumeric  from 'validator/lib/isAlphanumeric.js'
+import _isBase64        from 'validator/lib/isBase64.js'
+import _isCreditCard    from 'validator/lib/isCreditCard.js'
+import _isEmail         from 'validator/lib/isEmail.js'
+import _isIP            from 'validator/lib/isIP.js'
+import _isISO8601       from 'validator/lib/isISO8601.js'
+import _isJSON          from 'validator/lib/isJSON.js'
+import _isURL           from 'validator/lib/isURL.js'
+import _isUUID          from 'validator/lib/isUUID.js'
+
+// validator sub-modules use `exports.default` (Babel CJS), so in ESM the
+// default import is the whole exports object — unwrap the actual function.
+const isAlpha         = _isAlpha.default         || _isAlpha;
+const isAlphanumeric  = _isAlphanumeric.default  || _isAlphanumeric;
+const isBase64        = _isBase64.default        || _isBase64;
+const isCreditCard    = _isCreditCard.default    || _isCreditCard;
+const isEmail         = _isEmail.default         || _isEmail;
+const isIP            = _isIP.default            || _isIP;
+const isISO8601       = _isISO8601.default       || _isISO8601;
+const isJSON          = _isJSON.default          || _isJSON;
+const isURL           = _isURL.default           || _isURL;
+const isUUID          = _isUUID.default          || _isUUID;
 
 import {
     format      as formatDate,
@@ -18,7 +31,7 @@ import {
     isValid     as isValidDate,
     parse       as parseDate,
     parseISO,
-    toDate
+    toDate,
 } from "date-fns";
 
 const normalizeDate = (value) => {
@@ -430,9 +443,20 @@ export const dateformat = function(format) {
         name: 'dateformat',
         data: {format},
         test: (value) => {
+            // date-fns v4 removed the 'T' (ms timestamp) and 't' (s timestamp) tokens.
+            // Handle them manually for backwards compatibility.
+            if (format === 'T') {
+                let ms = _.isString(value) ? Number(value) : value;
+                return _.isFinite(ms) && ms > 0 && isValidDate(toDate(ms));
+            }
+            if (format === 't') {
+                let s = _.isString(value) ? Number(value) : value;
+                return _.isFinite(s) && s > 0 && isValidDate(toDate(s * 1000));
+            }
+
             let parsedDate = parseDate(value, format, new Date());
 
-            return isValidDate(parsedDate) 
+            return isValidDate(parsedDate)
                 && formatDate(parsedDate, format) === value.toString();
         },
     })

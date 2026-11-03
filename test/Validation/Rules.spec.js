@@ -1,7 +1,7 @@
 import {assert, expect} from 'chai'
-import * as _ from 'lodash';
+import _ from 'lodash';
 import * as $ from '../../src/Validation/index.js'
-import {Model} from '../../src'
+import {Model} from '../../src/index.js'
 
 /**
  * Some preset values to test with.

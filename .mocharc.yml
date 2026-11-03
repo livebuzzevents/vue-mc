@@ -1,0 +1,10 @@
+spec:
+  - 'test/Errors/RequestError.spec.js'
+  - 'test/Errors/ResponseError.spec.js'
+  - 'test/Errors/ValidationError.spec.js'
+  - 'test/HTTP/ProxyResponse.spec.js'
+  - 'test/Validation/Rule.spec.js'
+  - 'test/Validation/Rules.spec.js'
+  - 'test/Validation/Messages.spec.js'
+  - 'test/Structures/Model.spec.js'
+  - 'test/Structures/Collection.spec.js'
