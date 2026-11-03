@@ -32,13 +32,13 @@ const MAIN = {
 const VALIDATION = {
     ...BASE,
     input: "src/Validation/index.js",
-    output: [{ file: "validation/index.js", format: "cjs" }],
+    output: [{ file: "validation/index.js", format: "es" }],
 };
 
 const LOCALES = {
     ...BASE,
     input: "./src/Validation/locale.js",
-    output: [{ file: "validation/locale.js", format: "cjs" }],
+    output: [{ file: "validation/locale.js", format: "es" }],
 };
 
 export default [MAIN, VALIDATION, LOCALES];
